@@ -50,6 +50,11 @@ struct Collection {
     Alerts: String,
 }
 
+fn userAuth() {
+
+
+}
+
 //get user from colleciton
 
 fn get_user(currentUser: User)  {
@@ -62,9 +67,14 @@ fn get_user(currentUser: User)  {
 
     while let Some(doc) = cursor.next() {
         let doc = doc.unwrap();
-        currentUser.uid = doc.get_i32("uid").unwrap();
-        currentUser.username = doc.get_str("username").unwrap().to_string();
-        currentUser.email = doc.get_str("email").unwrap().to_string();
+        currentUser.uid = doc.get_i32("UID").unwrap();
+        currentUser.username = doc.get_str("Username").unwrap().to_string();
+        currentUser.email = doc.get_str("Email").unwrap().to_string();
+        currentUser.password = doc.get_vec("Password", "binary").unwrap();
+
+
+
+    userAuth(currentUser: User)
     }
 }
 
