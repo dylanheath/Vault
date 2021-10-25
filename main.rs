@@ -6,6 +6,8 @@ use std::thread;
 use std::fs;
 use std::env;
 use futures::stream::StreamExt;
+
+
 //json
 use serde::Deserialize;
 use serde_json::{Result, Value};
@@ -18,9 +20,10 @@ use terminal_spinners::{SpinnerBuilder, DOTS};
 
 //mongodb
 use mongodb::{
-    bson::{doc, Bson},
-    Client,
+    bson::{doc, Bson },
+    sync::Client,
 };
+
 
 
 
@@ -40,10 +43,36 @@ struct User {
     
 }
 
+struct Collection {
+    User: String,
+    Password: String,
+    Logs: String,
+    Alerts: String,
+}
+
+//get user from colleciton
+
+fn get_user(currentUser: User)  {
+
+    let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").expect("Failed to initialize client");
+    let db = client.database("Portal");
+    let UserCollection = db.collection("Users");
+    let mut cursor = UserCollection.find(Some(doc! {"uid" => currentUser.uid}), None).unwrap();
+
+
+    while let Some(doc) = cursor.next() {
+        let doc = doc.unwrap();
+        currentUser.uid = doc.get_i32("uid").unwrap();
+        currentUser.username = doc.get_str("username").unwrap().to_string();
+        currentUser.email = doc.get_str("email").unwrap().to_string();
+    }
+}
 
 
 fn main() {
     //starting sequence
+    
+
     println!("Vault - by Portal");
     
     let settingsJson = fs::read_to_string("settings.json").expect("Error reading config.json");
@@ -51,14 +80,22 @@ fn main() {
     let mut settings = settingsData.clone();
 
     let db_url = settings["db_url"].as_str().unwrap();
+    
+
+    let mut username = String::new();
+    io::stdin().read_line(&mut username).expect("Failed to read line");
 
 
-}
+    let currentUser = User {
+        uid: 0,
+        username: username.trim().to_string(),
+        email: "".to_string(),
+    };
 
-//async get user 
-async fn get_user(client: &Client, username: String) -> Result<User, mongodb::error::Error> {
-    //get user
-    let user = client.database("vault").collection("users").find_one(Some(doc!{"username": username}), None);
-    //return user
-    Ok(user.into_document().unwrap())
-}
+    get_user(currentUser);
+
+    }
+    
+
+
+
