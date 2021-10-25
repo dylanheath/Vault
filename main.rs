@@ -50,7 +50,7 @@ struct Collection {
     Alerts: String,
 }
 
-fn userAuth() {
+fn userAuth(currentUser: User) {
 
 
 }
@@ -74,7 +74,8 @@ fn get_user(currentUser: User)  {
 
 
 
-    userAuth(currentUser: User)
+    userAuth(currentUser)
+
     }
 }
 
@@ -91,7 +92,7 @@ fn main() {
 
     let db_url = settings["db_url"].as_str().unwrap();
     
-
+    println!("[*] enter username");
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to read line");
 
