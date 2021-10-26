@@ -19,5 +19,16 @@ pub fn menu(currentUser: User) {
     
     if menuOption == 1 {
         
+        add(currentUser)
 
     }
+
+    if menuOption == 2 {
+
+
+    }
+
+
+
+
+
