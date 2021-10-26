@@ -24,7 +24,27 @@ pub fn menu(currentUser: User) {
     }
 
     if menuOption == 2 {
+        view(currentUser)
 
+    }
+
+    if menuOption == 3 {
+        edit(currentUser)
+
+    }
+
+
+    if menuOption == 4 {
+        search(currentUser)
+
+    }
+
+    if menuOption == 5 {
+        exit(currentUser)
+
+    } else {
+        println!("[*] invalid option")
+        menu(currentUser)
 
     }
 
