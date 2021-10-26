@@ -4,6 +4,10 @@ mod view
 mod exit 
 mod search
 
+
+use std::io;
+use std::env;
+
 pub fn menu(currentUser: User) {
 
     println!("menu")
@@ -43,7 +47,7 @@ pub fn menu(currentUser: User) {
         exit(currentUser)
 
     } else {
-        println!("[*] invalid option")
+        println!("[*] invalid option, try again ")
         menu(currentUser)
 
     }
