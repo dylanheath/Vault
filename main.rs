@@ -1,3 +1,47 @@
+//system imports
+
+use std::io;
+use std::process;
+use std::thread;
+use std::fs;
+use std::env;
+use futures::stream::StreamExt;
+
+//function imports
+mod menu
+
+//json
+use serde::Deserialize;
+use serde_json::{Result, Value};
+
+//animations
+use terminal_spinners::{SpinnerBuilder, DOTS};
+
+//socket/networking
+
+
+//mongodb
+use mongodb::{
+    bson::{doc, Bson },
+    sync::Client,
+};
+
+
+
+
+//authenticator
+use google_authenticator::GoogleAuthenticator;
+
+//encryption
+use openssl::rsa::{Rsa, Padding};
+use openssl::symm::Cipher;
+use base64::{encode, decode};
+
+
+struct User {
+
+    uid: i32,
+    username: String,    
     email: String,
     token: i32,
     status: String,
