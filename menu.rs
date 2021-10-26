@@ -1,4 +1,8 @@
-
+mod add 
+mod edit 
+mod view 
+mod exit 
+mod search
 
 pub fn menu(currentUser: User) {
 
@@ -12,5 +16,8 @@ pub fn menu(currentUser: User) {
     println!("[*] :")
     let mut menuOption =  String::new();
     io::stdin().read_line(&mut menuOption).expect("Failed to read line");
+    
+    if menuOption == 1 {
+        
 
-}
+    }
