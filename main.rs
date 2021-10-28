@@ -8,11 +8,10 @@ use std::env;
 use futures::stream::StreamExt;
 
 //function imports
-mod menu;
 
 //json
 use serde::Deserialize;
-use serde_json::{Result, Value};
+use serde_json::{json ,Result, Value};
 
 //animations
 use terminal_spinners::{SpinnerBuilder, DOTS};
@@ -50,6 +49,12 @@ struct User {
     
 }
 
+fn menu(currentUser: User) {
+    println!("menu");
+
+
+}
+
 fn user_auth(currentUser: User) {
 
     println!("[*] enter password");
@@ -62,11 +67,9 @@ fn user_auth(currentUser: User) {
 
     if password == currentUser.password {
         println!("[*] logged in");
-        menu(currentUser)
 
     } else {
         println!("[*] incorrect password");
-        user_auth(currentUser)
     }
 
 }
@@ -79,23 +82,27 @@ fn get_user(currentUser: User)  {
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").expect("Failed to connect to server");
     let db = client.database("Portal");
     let UserCollection = db.collection("Users");
-    let mut cursor = UserCollection.find(Some(doc! {"uid" => currentUser.uid}), None).unwrap();
+    let user_data = UserCollection.find(Some(doc! {"UID": currentUser.uid}), None).unwrap();
 
+    let user_data: Value  = json!(user_data);
+    currentUser.uid = user_data["UID"];
 
-    while let Some(doc) = cursor.next() {
-        let doc = doc.unwrap();
-        currentUser.uid = doc.get_i32("UID").unwrap();
-        currentUser.username = doc.get_str("Username").unwrap().to_string();
-        currentUser.email = doc.get_str("Email").unwrap().to_string();
-        currentUser.password = doc.get_vec("Password").unwrap();
-        currentUser.token = doc.get_i32("Token").unwrap();
-        currentUser.status = doc.get_str("Status").unwrap().to_string();
-        currentUser.role = doc.get_str("Role").unwrap().to_string();
+    }
+    
+    
+   // while let Some(doc) = cursor.next() {
+     //   let doc = doc.unwrap();
+       // currentUser.uid = doc.get_i64("UID").unwrap();
+       // currentUser.username = doc.get_str("Username").unwrap().to_string();
+       // currentUser.email = doc.get_str("Email").unwrap().to_string();
+       // currentUser.password = doc.get_vec("Password").unwrap();
+       // currentUser.token = doc.get_i32("Token").unwrap();
+       // currentUser.status = doc.get_str("Status").unwrap().to_string();
+       // currentUser.role = doc.get_str("Role").unwrap().to_string();
 
     user_auth(currentUser)
 
     }
-}
 
 
 fn main() {
@@ -110,7 +117,7 @@ fn main() {
 
     let status = settings["Status"].as_str().unwrap();
     let uid  = settings["UID"].as_str().unwrap();
-    let clientToken = settings["Token"].as_i32().unwrap(); 
+    let client_Token = settings["Token"].as_i32().unwrap(); 
 
 
     println!("[*] enter username");
@@ -122,9 +129,10 @@ fn main() {
         uid: 0,
         username: username.trim().to_string(),
         email: "".to_string(),
+        password: "".to_string(),
         token: 0,
-        role: String,
-        Status: String,
+        role: "".to_string(),
+        status: "".to_string(),
     };
 
     get_user(currentUser);
