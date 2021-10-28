@@ -8,7 +8,7 @@ use std::env;
 use futures::stream::StreamExt;
 
 //function imports
-mod menu
+mod menu;
 
 //json
 use serde::Deserialize;
@@ -35,13 +35,14 @@ use google_authenticator::GoogleAuthenticator;
 //encryption
 use openssl::rsa::{Rsa, Padding};
 use openssl::symm::Cipher;
-use base64::{encode, decode};
+
 
 
 struct User {
 
     uid: i32,
-    username: String,    
+    username: String,  
+    password: String,  
     email: String,
     token: i32,
     status: String,
@@ -51,7 +52,7 @@ struct User {
 
 fn user_auth(currentUser: User) {
 
-    println!("[*] enter password")
+    println!("[*] enter password");
     let mut password = String::new();
     io::stdin().read_line(&mut password).expect("Failed to read line");
     
@@ -60,11 +61,11 @@ fn user_auth(currentUser: User) {
     //encode password input to rsa
 
     if password == currentUser.password {
-        println!("[*] logged in")
+        println!("[*] logged in");
         menu(currentUser)
 
     } else {
-        println!("[*] incorrect password")
+        println!("[*] incorrect password");
         user_auth(currentUser)
     }
 
@@ -91,7 +92,7 @@ fn get_user(currentUser: User)  {
         currentUser.status = doc.get_str("Status").unwrap().to_string();
         currentUser.role = doc.get_str("Role").unwrap().to_string();
 
-    userAuth(currentUser)
+    user_auth(currentUser)
 
     }
 }
