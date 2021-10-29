@@ -86,7 +86,6 @@ async fn get_user(currentUser: User) -> Option<i32> {
     let user_data = UserCollection.find_one(doc! {"UID": currentUser.uid} , None).unwrap()?;
 
      
-    
    // let query = doc! {"Username": currentUser.username}
     
 
@@ -126,8 +125,7 @@ async fn get_user(currentUser: User) -> Option<i32> {
 
 
 
-
-fn main() {
+fn main()  {
     //starting sequence
     
 
