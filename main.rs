@@ -36,7 +36,7 @@ use openssl::rsa::{Rsa, Padding};
 use openssl::symm::Cipher;
 
 
-//#[derive(Debug , Serialize, Deserialize)]
+#[derive(Debug , Serialize, Deserialize)]
 struct User {
     name: String,
     password: String,
@@ -81,14 +81,17 @@ fn user_auth(currentUser: User) {
 }
 
 async fn get_user(UserCollection: mongodb::sync::Collection<User>) {
-
+   let cursor = UserCollection.find(doc! {"Username" : "placeholder"}, None).unwrap(); 
+   for result in cursor {
+       println!("{:?}", result);
+   }
 
 }
 
 
 
 //get user from collecgton
-fn get_connection(username: &str){
+fn get_connection(username: String){
      
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").expect("Failed to connect to server");
@@ -123,6 +126,7 @@ fn main()  {
     
 
     println!("Vault - by Portal");
+    println!("version - 1.0.0");
     
     let settingsJson = fs::read_to_string("settings.json").expect("Error reading config.json");
     let settingsData: Value = serde_json::from_str(&settingsJson).expect("Error parsing config.json");
@@ -132,9 +136,9 @@ fn main()  {
     let uid  = settings["UID"].as_str().unwrap();
 
 
-    println!("[*] enter username");
-    let mut username = String::new();
-    io::stdin().read_line(&mut username).expect("Failed to read line");
+   // println!("[*] enter username");
+   // let mut username = String::new();
+   // io::stdin().read_line(&mut username).expect("Failed to read line");
     
    
 
@@ -148,7 +152,7 @@ fn main()  {
        // status: "".to_string(),
    // };
 
-    get_connection(username);
+    get_connection();
 
     }
     
