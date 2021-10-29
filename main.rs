@@ -75,15 +75,39 @@ fn user_auth(currentUser: User) {
 
 //get user from colleciton
 
-fn get_user(currentUser: User)  {
+async fn get_user(currentUser: User)  {
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").expect("Failed to connect to server");
     let db = client.database("Portal");
     let UserCollection = db.collection("Users");
-    let user_data = UserCollection.find_one(Some(doc! {"UID": currentUser.uid}), None).unwrap();
+
+
+        
+
+
+
+
+
+   //let user_data = UserCollection.find_one(Some(doc! {"UID": currentUser.uid}), None).unwrap();
+
+   // let query = doc! {"Username": currentUser.username};
+
+    //let user_doc = UserCollection.find_one(query.clone(), None); 
+    //currentUser.uid =  user_doc.get_i32("UID");
+
+
+
+
+
+
+
+
+
+
 
     let user_data: Value = json!(user_data);
-   // currentUser.uid = user_data.["UID"].to_i32();
+
+    currentUser.uid = user_data["UID"].to_i32();
 
     
     
