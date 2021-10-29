@@ -36,18 +36,24 @@ use openssl::rsa::{Rsa, Padding};
 use openssl::symm::Cipher;
 
 
-#[derive(Debug , Serialize, Deserialize)]
+//#[derive(Debug , Serialize, Deserialize)]
 struct User {
+    name: String,
+    password: String,
 
-    uid: i32,
-    username: String,  
-    password: String,  
-    email: String,
-    token: i32,
-    status: String,
-    role: String,
-    
+
 }
+//struct User {
+
+  //  uid: i32,
+  //  username: String,  
+   // password: String,  
+   // email: String,
+   // token: i32,
+   // status: String,
+   // role: String,
+    
+//}
 
 fn menu(currentUser: User) {
     println!("menu");
@@ -74,17 +80,22 @@ fn user_auth(currentUser: User) {
 
 }
 
+async fn get_user(UserCollection: mongodb::sync::Collection<User>) {
+
+
+}
+
 
 
 //get user from collecgton
-async fn get_connection(currentUser: User) -> Option<i32> {
+fn get_connection(username: &str){
      
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").expect("Failed to connect to server");
     let db = client.database("Portal");
-    let UserCollection = db.collection("Users");
+    let UserCollection = db.collection::<User>("Users");
     
-    let user_data = UserCollection.find_one(doc! {"UID": currentUser.uid} , None).unwrap()?;
+   // let user_data = UserCollection.find_one(doc! {"UID": currentUser.uid} , None).unwrap()?;
  
    // let query = doc! {"Username": currentUser.username}
     
@@ -92,8 +103,8 @@ async fn get_connection(currentUser: User) -> Option<i32> {
    // currentUser.uid =  user_data.get_i32("UID").await?;
     
    // let data: Data = bson::from_bson(Bson::Document(user_data));
-    user_auth(currentUser)
-
+    
+    get_user(UserCollection);
 
 }
  
@@ -124,19 +135,20 @@ fn main()  {
     println!("[*] enter username");
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to read line");
+    
+   
 
+   // let currentUser = User {
+     //   uid: 0,
+       // username: username.trim().to_string(),
+       // email: "".to_string(),
+       // password: "".to_string(),
+       // token: 0,
+       // role: "".to_string(),
+       // status: "".to_string(),
+   // };
 
-    let currentUser = User {
-        uid: 0,
-        username: username.trim().to_string(),
-        email: "".to_string(),
-        password: "".to_string(),
-        token: 0,
-        role: "".to_string(),
-        status: "".to_string(),
-    };
-
-    get_connection(currentUser);
+    get_connection(username);
 
     }
     
