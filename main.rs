@@ -12,7 +12,7 @@ use async_std::net;
 //function imports
 
 //json
-use serde::Deserialize;
+use serde::{Deserialize , Serialize};
 use serde_json::{json ,Result, Value};
 
 //animations
@@ -36,7 +36,7 @@ use openssl::rsa::{Rsa, Padding};
 use openssl::symm::Cipher;
 
 
-
+#[derive(Debug , Serialize, Deserialize)]
 struct User {
 
     uid: i32,
