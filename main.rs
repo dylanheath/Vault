@@ -89,6 +89,10 @@ async fn get_user(currentUser: User) -> <i32> {
 
     currentUser.uid =  user_data.get_i32("UID");
 
+    user_auth(currentUser)
+
+
+
 }
 
 
@@ -99,9 +103,7 @@ async fn get_user(currentUser: User) -> <i32> {
 
 
 
-    let user_data: Value = json!(user_data);
 
-    currentUser.uid = user_data["UID"].to_i32();
 
     
     
@@ -115,9 +117,7 @@ async fn get_user(currentUser: User) -> <i32> {
        // currentUser.status = doc.get_str("Status").unwrap().to_string();
        // currentUser.role = doc.get_str("Role").unwrap().to_string();
 
-    user_auth(currentUser)
 
-    }
 
 
 fn main() {
