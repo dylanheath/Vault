@@ -75,8 +75,9 @@ fn user_auth(currentUser: User) {
 }
 
 
-//get user from colleciton
-async fn get_user(currentUser: User) -> Option<i32> {
+
+//get user from collecgton
+async fn get_connection(currentUser: User) -> Option<i32> {
      
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").expect("Failed to connect to server");
@@ -84,35 +85,18 @@ async fn get_user(currentUser: User) -> Option<i32> {
     let UserCollection = db.collection("Users");
     
     let user_data = UserCollection.find_one(doc! {"UID": currentUser.uid} , None).unwrap()?;
-
-     
+ 
    // let query = doc! {"Username": currentUser.username}
     
 
    // currentUser.uid =  user_data.get_i32("UID").await?;
     
    // let data: Data = bson::from_bson(Bson::Document(user_data));
-
-
-
     user_auth(currentUser)
 
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-    
-    
+ 
    // while let Some(doc) = cursor.next() {
      //   let doc = doc.unwrap();
        // currentUser.uid = doc.get_i64("UID").unwrap();
@@ -122,8 +106,6 @@ async fn get_user(currentUser: User) -> Option<i32> {
        // currentUser.token = doc.get_i32("Token").unwrap();
        // currentUser.status = doc.get_str("Status").unwrap().to_string();
        // currentUser.role = doc.get_str("Role").unwrap().to_string();
-
-
 
 fn main()  {
     //starting sequence
@@ -137,7 +119,6 @@ fn main()  {
 
     let status = settings["Status"].as_str().unwrap();
     let uid  = settings["UID"].as_str().unwrap();
-    let client_Token = settings["Token"].as_i32().unwrap(); 
 
 
     println!("[*] enter username");
@@ -155,7 +136,7 @@ fn main()  {
         status: "".to_string(),
     };
 
-    get_user(currentUser);
+    get_connection(currentUser);
 
     }
     
