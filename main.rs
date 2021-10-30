@@ -11,7 +11,6 @@ use async_std::io::prelude::*;
 use async_std::net;
 //function imports
 
-//json
 use serde::{Deserialize , Serialize};
 use serde_json::{json ,Result, Value};
 
@@ -40,8 +39,6 @@ use openssl::symm::Cipher;
 struct User {
     name: String,
     password: String,
-
-
 }
 //struct User {
 
@@ -80,10 +77,19 @@ fn user_auth(currentUser: User) {
 
 }
 
-async fn get_user(UserCollection: mongodb::sync::Collection<User>) {
-   let cursor = UserCollection.find(doc! {"Username" : "placeholder"}, None).unwrap(); 
+
+
+fn delete_user(UserCollection: mongodb::sync::Collection<User>) {
+    let result = UserCollection.delete_one(doc! {"name" : "dylan"}, None).unwrap();
+    println!("{:?}" , result);
+
+}
+
+fn get_user(UserCollection: mongodb::sync::Collection<User>) {
+   let cursor = UserCollection.find_one(doc! {"name" : "dylan"}, None).unwrap(); 
+
    for result in cursor {
-       println!("{:?}", result);
+      println!("{:?}", result);
    }
 
 }
@@ -96,7 +102,7 @@ fn get_connection(username: String){
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").expect("Failed to connect to server");
     let db = client.database("Portal");
-    let UserCollection = db.collection::<User>("Users");
+    let UserCollection = db.collection::<User>("User");
     
    // let user_data = UserCollection.find_one(doc! {"UID": currentUser.uid} , None).unwrap()?;
  
@@ -107,6 +113,7 @@ fn get_connection(username: String){
     
    // let data: Data = bson::from_bson(Bson::Document(user_data));
     
+   // get_user(UserCollection);
     get_user(UserCollection);
 
 }
@@ -128,18 +135,20 @@ fn main()  {
     println!("Vault - by Portal");
     println!("version - 1.0.0");
     
-    let settingsJson = fs::read_to_string("settings.json").expect("Error reading config.json");
-    let settingsData: Value = serde_json::from_str(&settingsJson).expect("Error parsing config.json");
-    let mut settings = settingsData.clone();
+   // let settingsJson = fs::read_to_string("settings.json").expect("Error reading config.json");
+   // let settingsData: Value = serde_json::from_str(&settingsJson).expect("Error parsing config.json");
+   // let mut settings = settingsData.clone();
 
-    let status = settings["Status"].as_str().unwrap();
-    let uid  = settings["UID"].as_str().unwrap();
+   // let status = settings["Status"].as_str().unwrap();
+   // let uid  = settings["UID"].as_str().unwrap();
 
 
-   // println!("[*] enter username");
-   // let mut username = String::new();
-   // io::stdin().read_line(&mut username).expect("Failed to read line");
+    // println!("[*] enter username");
+    // let mut username = String::new();
+    // io::stdin().read_line(&mut username).expect("Failed to read line");
     
+    let something = String::from("test");
+
    
 
    // let currentUser = User {
@@ -152,7 +161,7 @@ fn main()  {
        // status: "".to_string(),
    // };
 
-    get_connection();
+    get_connection(something);
 
     }
     
