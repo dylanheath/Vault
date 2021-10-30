@@ -39,7 +39,11 @@ struct User {
 
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
-    let mut cursor = coll.find(doc! {"name":"dylan"}, None).await?;
+    
+    let mut username = String::new();
+    io::stdin().read_line(&mut username).expect("Failed to get input");
+
+    let mut cursor = coll.find(doc! {"name": username}, None).await?;
     while let Some(user) = cursor.try_next().await? {
         println!("{:?}", user);
     }
