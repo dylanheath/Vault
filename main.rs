@@ -52,37 +52,37 @@ impl fmt::Display for User{
 }
 
 
-fn user_data() {
+fn user_data(currentUser: User) {
 
 
 }
 
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
-    
+
     println!("[*] enter username");
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to get input");
     
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
-    let mut cursor = coll.find(doc! {"name": username}, None).await?;
-
-
+    let mut cursor = coll.find(doc! {"name": username}, None).await?; 
    // println!("{:?}", cursor);
 
-    while let Some(user) = cursor.try_next().await? {
-        println!("{:?}", user.name);
-    }
+    if let Some(user) = cursor.try_next().await? {
+        let currentUser = User {
+           name: user.name,
+           password: user.password,
+        };
 
-    
+        user_data(currentUser);
+    }; 
    // let username = cursor.name;
 
     std::thread::sleep(std::time::Duration::from_secs(3));
     handle.done();
 
      
-
     Ok(())
 
 
