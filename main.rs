@@ -1,11 +1,12 @@
 //system imports
-
+use tokio;
 use std::io;
 use std::process;
 use std::thread;
 use std::fs;
 use std::fmt;
 use std::env;
+use bson::from_document;
 use bson::oid::Error;
 use futures::stream::StreamExt;
 use futures::TryStreamExt;
@@ -24,6 +25,7 @@ use terminal_spinners::{SpinnerBuilder, DOTS};
 
 //mongodb
 use mongodb::{Client, bson::doc };
+use mongodb::bson::{self, Bson};
 //authenticator
 use google_authenticator::GoogleAuthenticator;
 
@@ -50,7 +52,10 @@ impl fmt::Display for User{
 }
 
 
+fn user_data() {
 
+
+}
 
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
@@ -62,22 +67,26 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
     let mut cursor = coll.find(doc! {"name": username}, None).await?;
+
+
    // println!("{:?}", cursor);
-    
-    
 
     while let Some(user) = cursor.try_next().await? {
-       println!("{:?}", user);
+        println!("{:?}", user.name);
     }
 
+    
+   // let username = cursor.name;
 
     std::thread::sleep(std::time::Duration::from_secs(3));
     handle.done();
 
+     
+
     Ok(())
 
 
-    
+ 
 }
 
 #[tokio::main]
