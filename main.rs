@@ -4,6 +4,7 @@ use std::io;
 use std::process;
 use std::thread;
 use std::fs;
+use std::fmt;
 use std::env;
 use bson::oid::Error;
 use futures::stream::StreamExt;
@@ -37,9 +38,19 @@ struct User {
     password: String,
 }
 
-fn user_data() {
-
+impl fmt::Display for User{
+   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+      write!(
+         f,
+         "{}, {}",
+         self.name,
+         self.password,
+      )
+   }
 }
+
+
+
 
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
@@ -50,12 +61,14 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
     
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
-    let cursor = coll.find(doc! {"name": username}, None).await?;
-    println!("{:?}", cursor);
+    let mut cursor = coll.find(doc! {"name": username}, None).await?;
+   // println!("{:?}", cursor);
+    
+    
 
-   //while let Some(user) = cursor.try_next().await? {
-       //println!("{:?}", user);
-   // }
+    while let Some(user) = cursor.try_next().await? {
+       println!("{:?}", user);
+    }
 
 
     std::thread::sleep(std::time::Duration::from_secs(3));
