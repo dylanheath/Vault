@@ -51,8 +51,16 @@ impl fmt::Display for User{
    }
 }
 
+fn view(currentUser: User) {
+    
+}
 
-fn user_data(currentUser: User) {
+fn add(currentUser: User) {
+    
+}
+
+//get user input and then pass currentUser to a function which is picked
+fn menu(currentUser: User) {
 
 
 }
@@ -75,7 +83,7 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
            password: user.password,
         };
 
-        user_data(currentUser);
+        user_data(menu);
     }; 
    // let username = cursor.name;
 
