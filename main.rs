@@ -51,10 +51,49 @@ impl fmt::Display for User{
    }
 }
 
+fn exit(currentUser: User) {
 
+<<<<<<< HEAD
 fn user_data(current_User: User) {
+=======
+>>>>>>> eaae19f8e78578d160d54084080bc83f8c764754
 
+}
 
+fn search(currentUser: User) {
+
+    
+}
+
+fn view(currentUser: User) {
+    
+}
+
+fn add(currentUser: User) {
+    
+}
+
+//get user input and then pass currentUser to a function which is picked
+fn menu(currentUser: User) {
+    let mut menu_option = String::new();
+    io::stdin().read_line(&mut menu_option).expect("Failed to get line");
+
+    if menu_option == "1" {
+        add(currentUser)
+    }
+
+    if menu_option == "2" {
+        view(currentUser)
+    }
+    
+    if menu_option == "3" {
+        search(currentUser)
+    }
+    
+    if menu_option == "4" {
+        exit(currentUser)
+    } 
+ 
 }
 
 
@@ -75,7 +114,11 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
            password: user.password,
         };
 
+<<<<<<< HEAD
         user_data(current_User);
+=======
+        user_data(menu);
+>>>>>>> eaae19f8e78578d160d54084080bc83f8c764754
     }; 
    // let username = cursor.name;
 
