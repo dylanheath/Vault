@@ -1,2 +1,2 @@
 # Vault
-password manager 
+Rust MongoDB password manager
