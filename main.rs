@@ -61,8 +61,9 @@ fn add(currentUser: User) {
 
 //get user input and then pass currentUser to a function which is picked
 fn menu(currentUser: User) {
-
-
+    let mut menu_option = String::new();
+    io::stdin().read_line(&mut menu_option).expect("Failed to get line");
+    
 }
 
 
