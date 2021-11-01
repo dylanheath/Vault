@@ -52,7 +52,7 @@ impl fmt::Display for User{
 }
 
 
-fn user_data(current_User: User) {
+fn menu(current_User: User) {
 
 }
 
@@ -75,11 +75,12 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
            password: user.password,
         };
 
-         user_data(current_User);
+         menu(current_User);
     };
 
     std::thread::sleep(std::time::Duration::from_secs(3));
     handle.done();
+
 
      
     Ok(())
