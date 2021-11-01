@@ -52,10 +52,10 @@ impl fmt::Display for User{
 }
 
 
-<<<<<<< HEAD
 fn user_data(current_User: User) {
-=======
->>>>>>> eaae19f8e78578d160d54084080bc83f8c764754
+
+}
+
 
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
@@ -75,13 +75,8 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
            password: user.password,
         };
 
-<<<<<<< HEAD
-        user_data(current_User);
-=======
-        user_data(menu);
->>>>>>> eaae19f8e78578d160d54084080bc83f8c764754
-    }; 
-   // let username = cursor.name;
+         user_data(current_User);
+    };
 
     std::thread::sleep(std::time::Duration::from_secs(3));
     handle.done();
