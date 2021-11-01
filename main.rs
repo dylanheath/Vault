@@ -52,7 +52,7 @@ impl fmt::Display for User{
 }
 
 
-fn user_data(currentUser: User) {
+fn user_data(current_User: User) {
 
 
 }
@@ -70,12 +70,12 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
    // println!("{:?}", cursor);
 
     if let Some(user) = cursor.try_next().await? {
-        let currentUser = User {
+        let current_User = User {
            name: user.name,
            password: user.password,
         };
 
-        user_data(currentUser);
+        user_data(current_User);
     }; 
    // let username = cursor.name;
 
