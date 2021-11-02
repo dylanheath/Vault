@@ -151,6 +151,7 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
 
 
 fn menu(current_User: User) {
+    println!("test");
     
     
 
@@ -165,18 +166,20 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
     
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
-    let mut cursor = coll.find(doc! {"name": username}, None).await?; 
+    let mut cursor = coll.find(doc! {"name": username }, None).await?; 
    // println!("{:?}", cursor);
 
-    if let Some(user) = cursor.try_next().await? {
+    if let Some(User) = cursor.try_next().await? {
         let current_User = User {
-           uid: user.uid,
-           name: user.name,
-           password: user.password,
+           uid: User.uid,
+           name: User.name,
+           password: User.password,
         };
 
+        
          menu(current_User);
     };
+
 
     std::thread::sleep(std::time::Duration::from_secs(3));
     handle.done();
