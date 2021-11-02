@@ -36,27 +36,93 @@ use openssl::symm::Cipher;
 
 #[derive(Debug , Serialize, Deserialize)]
 struct User {
+    uid: i32,
     name: String,
     password: String,
+
+}
+
+#[derive(Debug , Serialize , Deserialize)]
+struct Password {
+    name: String,
+    username: String,
+    password: String,
+    email: String,
+  
 }
 
 impl fmt::Display for User{
    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
       write!(
          f,
-         "{}, {}",
+         "{},{}, {}",
+         self.uid,
          self.name,
          self.password,
       )
    }
 }
 
+impl fmt::Display for Password {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f, 
+            "{}, {} ,{}, {}",
+            self.name,
+            self.username,
+            self.password,
+            self.email,
+        )
+       }
+}
 
-fn menu(current_User: User) {
+//static server connections
+
+
+async fn add() {
 
 }
 
 
+
+async fn delete() {
+
+}
+
+async fn view(current_User: User) -> mongodb::error::Result<()> {
+
+    let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?; 
+    let db = client.database("myFirstDatabase");
+    let coll = db.collection::<Password>("Passwords");
+
+    let mut cursor = coll.find(doc! {"UID": current_User.uid}, None).await?;
+
+    while let Some(password) = cursor.try_next().await? {
+
+            let passwordview = Password {
+                name: password.name,
+                username: password.username,
+                password: password.password,
+                email: password.email,
+             };
+             
+            println!("[*] {}", passwordview.name);
+            println!("  {}", passwordview.username);
+            println!("  {}", passwordview.password);
+            println!("  {}", passwordview.email);
+        
+    } 
+
+    Ok(())
+}
+
+
+fn menu(current_User: User) {
+    
+    
+
+
+}
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
 
@@ -71,6 +137,7 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
 
     if let Some(user) = cursor.try_next().await? {
         let current_User = User {
+           uid: user.uid,
            name: user.name,
            password: user.password,
         };
@@ -80,13 +147,8 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
 
     std::thread::sleep(std::time::Duration::from_secs(3));
     handle.done();
-
-
      
-    Ok(())
-
-
- 
+    Ok(()) 
 }
 
 #[tokio::main]
