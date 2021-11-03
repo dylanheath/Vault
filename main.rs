@@ -24,7 +24,7 @@ use terminal_spinners::{SpinnerBuilder, DOTS};
 
 
 //mongodb
-use mongodb::{Client, bson::doc };
+use mongodb::{Client, bson::doc , options::FindOptions };
 use mongodb::bson::{self, Bson};
 //authenticator
 use google_authenticator::GoogleAuthenticator;
@@ -164,9 +164,11 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to get input");
     
+    let filter = doc! {"name": username.to_string()};
+    
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
-    let mut cursor = coll.find(doc! {"name": username }, None).await?; 
+    let mut cursor = coll.find(filter, None).await?; 
    // println!("{:?}", cursor);
 
     if let Some(user) = cursor.try_next().await? {
