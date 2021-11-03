@@ -169,11 +169,11 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
     let mut cursor = coll.find(doc! {"name": username }, None).await?; 
    // println!("{:?}", cursor);
 
-    if let Some(User) = cursor.try_next().await? {
+    if let Some(user) = cursor.try_next().await? {
         let current_User = User {
-           uid: User.uid,
-           name: User.name,
-           password: User.password,
+           uid: user.uid,
+           name: user.name,
+           password:user.password,
         };
 
         
