@@ -4,6 +4,7 @@ use std::io;
 use std::process;
 use std::thread;
 use std::fs;
+use std::str;
 use std::fmt;
 use std::env;
 use bson::from_document;
@@ -195,12 +196,12 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
 #[tokio::main]
 async fn main() -> mongodb::error::Result<()> {
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
-    let db = client.database("User");
+    let db = client.database("User"); //< needs to change for every collection such as Users and passwords
 
     let coll = db.collection::<User>("User");
 
     find_user(coll).await?;
-
+    
     Ok(())
 
 }
