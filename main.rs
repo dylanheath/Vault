@@ -164,12 +164,15 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to get input");
     
-    let filter = doc! {"name": username.to_string()};
+    let filter = doc! {"name": "test"};
     
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
     let mut cursor = coll.find(filter, None).await?; 
    // println!("{:?}", cursor);
+   //
+    std::thread::sleep(std::time::Duration::from_secs(3));
+    handle.done();
 
     if let Some(user) = cursor.try_next().await? {
         let current_User = User {
@@ -177,22 +180,21 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
            name: user.name,
            password:user.password,
         };
+        
+        println!("{:?}" , user.uid);
 
         
          menu(current_User);
     };
 
 
-    std::thread::sleep(std::time::Duration::from_secs(3));
-    handle.done();
-     
     Ok(()) 
 }
 
 #[tokio::main]
 async fn main() -> mongodb::error::Result<()> {
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
-    let db = client.database("myFirstDatabase");
+    let db = client.database("User");
 
     let coll = db.collection::<User>("User");
 
