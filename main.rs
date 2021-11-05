@@ -160,6 +160,7 @@ fn menu(current_User: User) {
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
 
+    // need to change how to string is formatted compared to mongodb query 
     println!("[*] enter username");
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to get input");
