@@ -153,7 +153,7 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
 
 fn menu(current_User: User) {
 //menu options and display    
-    
+    // println!("{}" , current_User.uid);    
 
 
 }
@@ -184,7 +184,6 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
            password:user.password,
         };
         
-        println!("{:?}" , user.uid);
 
         
          menu(current_User);
