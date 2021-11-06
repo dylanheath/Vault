@@ -152,7 +152,6 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
 
 
 fn menu(current_User: User) {
-    println!("test");
     
     
 
@@ -165,8 +164,10 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
     println!("[*] enter username");
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to get input");
-    
-    let filter = doc! {"name": "test"};
+
+    let username = username.trim();
+ 
+    let filter = doc! {"name": username};
     
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
