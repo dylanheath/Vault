@@ -53,12 +53,14 @@ struct Password {
 }
 
 #[derive(Debug , Serialize , Deserialize)]
-struct User_edit {
-    name: String,
+struct edit_pass {
     password: String,
 }
 
-
+#[derive(Debug , Serialize , Deserialize)]
+struct edit_name {
+    name: String,
+}
 
 
 impl fmt::Display for User{
@@ -90,11 +92,52 @@ impl fmt::Display for Password {
 //
 
 
-fn change_name(current_User: User) {
+async fn change_name(current_User: User) -> mongodb::error::Result<()> {
+    
+    let mut new_name = String::new();
+    io::stdin().read_line(&mut new_name).expect("Failed to read line");
+    let new_name = new_name.trim();
+
+    let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Updating Data").start();
+
+    let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
+    let db = client.database("User");
+    let coll = db.collection::<edit_name>("User");
+    
+    let filter = doc!{"name": current_User.name};
+    let update = doc!{"$set": {"name": new_name}};
+    
+    let input = coll.update_one(filter, update , None).await.unwrap(); 
+    
+    std::thread::sleep(std::time::Duration::from_secs(3));
+    handle.done();
+
+    Ok(())
 
 }
 
-fn change_password(current_User: User) {
+async fn change_password(current_User: User) -> mongodb::error::Result<()>  {
+
+    let mut new_password = String::new();
+    io::stdin().read_line(&mut new_password).expect("Failed to read line");
+    let new_password = new_password.trim();
+    
+    let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Updating Data").start();
+
+    let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
+    let db = client.database("User");
+    let coll = db.collection::<edit_pass>("Passwords");
+
+    let filter = doc!{"name": current_User.name};
+    let update = doc!{"$set": {"password": new_password}};
+
+    let input = coll.update_one(filter , update , None).await.unwrap(); 
+
+    std::thread::sleep(std::time::Duration::from_secs(3));
+    handle.done();
+
+    Ok(())
+
 
 }
 
@@ -145,13 +188,11 @@ fn abt_userAuth(current_User: User) {
             abt_user(current_User);
 
     } else {
-        println!("incorrect password");
+        println!("incorrect password, try again");
         abt_userAuth(current_User);        
 
     }
 
-
-    
 
 }
 
@@ -184,11 +225,11 @@ async fn add(current_User: User) -> mongodb::error::Result<()> {
     };
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
-    let db = client.database("myFirstDatabase");
+    let db = client.database("Passwords");
     let coll = db.collection::<Password>("Passwords");
 
     let insert = coll.insert_one(Password {name: passwordadd.name.to_string(), password: passwordadd.password.to_string() , username: passwordadd.username.to_string() , email: passwordadd.email.to_string() }, None ).await?;
-    println!("[*]  password added");
+    println!("[*] password added");
 
     Ok(())
 
@@ -205,7 +246,7 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
     let handle =  SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?; 
-    let db = client.database("Password");
+    let db = client.database("Passwords");
     let coll = db.collection::<Password>("Passwords");
 
     let mut cursor = coll.find(doc! {"uid": current_User.uid}, None).await?;
