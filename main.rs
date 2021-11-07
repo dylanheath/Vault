@@ -92,6 +92,8 @@ impl fmt::Display for Password {
 //
 
 
+//change passwords functions next
+
 async fn change_name(current_User: User) -> mongodb::error::Result<()> {
     
     let mut new_name = String::new();
