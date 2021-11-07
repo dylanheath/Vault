@@ -78,6 +78,11 @@ impl fmt::Display for Password {
 }
 
 //static server connections
+//
+fn exit(current_User: User) {
+
+
+}
 
 
 async fn add(current_User: User) -> mongodb::error::Result<()> {
@@ -162,14 +167,15 @@ fn menu(current_User: User) {
     let menu_option = menu_option.trim();
 
     if menu_option == "1" {
-        println!("hello");
+        add(current_User);
     } else if menu_option == "2"  {
-        println!("goodbye");
+        view(current_User);
     } else if menu_option == "3" {
-        println!("something");
+        exit(current_User);
     } else {
-        println!("option not valid")
-    }
+        println!("option not valid");
+        menu(current_User);
+    };
     
 
 
