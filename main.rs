@@ -152,10 +152,29 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
 
 
 fn menu(current_User: User) {
+    println!("[*] menu");
+    println!(" 1. add");
+    println!(" 2. view");
+    println!(" 3. exit");
+
+    let mut menu_option = String::new();
+    io::stdin().read_line(&mut menu_option).expect("Failed to read line");
+    let menu_option = menu_option.trim();
+
+    if menu_option == "1" {
+        println!("hello");
+    } else if menu_option == "2"  {
+        println!("goodbye");
+    } else if menu_option == "3" {
+        println!("something");
+    } else {
+        println!("option not valid")
+    }
+    
+
+
 //menu options and display    
     // println!("{}" , current_User.uid);    
-
-
 }
 
 async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<()> {
