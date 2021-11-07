@@ -80,7 +80,34 @@ impl fmt::Display for Password {
 //static server connections
 //
 fn exit(current_User: User) {
+    println!("[*] see you soon {}!" ,current_User.name);
+    println!("[*] signed out")
 
+}
+
+fn abt_user(current_User: User) {
+
+}
+
+fn abt_userAuth(current_User: User) {
+    println!("about user");
+    println!("[*] please re-enter your password");
+
+    let mut password_entry = String::new();
+    io::stdin().read_line(&mut password_entry).expect("Failed to read line");
+    let password_entry = password_entry.trim();
+
+    if password_entry == current_User.password {
+            abt_user(current_User);
+
+    } else {
+        println!("incorrect password");
+        abt_userAuth(current_User);        
+
+    }
+
+
+    
 
 }
 
@@ -117,6 +144,7 @@ async fn add(current_User: User) -> mongodb::error::Result<()> {
     let coll = db.collection::<Password>("Passwords");
 
     let insert = coll.insert_one(Password {name: passwordadd.name.to_string(), password: passwordadd.password.to_string() , username: passwordadd.username.to_string() , email: passwordadd.email.to_string() }, None ).await?;
+    println!("[*]  password added");
 
     Ok(())
 
@@ -130,11 +158,16 @@ async fn delete() {
 
 async fn view(current_User: User) -> mongodb::error::Result<()> {
 
+    let handle =  SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
+
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?; 
-    let db = client.database("myFirstDatabase");
+    let db = client.database("Password");
     let coll = db.collection::<Password>("Passwords");
 
-    let mut cursor = coll.find(doc! {"UID": current_User.uid}, None).await?;
+    let mut cursor = coll.find(doc! {"uid": current_User.uid}, None).await?;
+
+    std::thread::sleep(std::time::Duration::from_secs(3));
+    handle.done();
 
     while let Some(password) = cursor.try_next().await? {
 
@@ -173,7 +206,7 @@ fn menu(current_User: User) {
     } else if menu_option == "3" {
         exit(current_User);
     } else {
-        println!("option not valid");
+        println!("option not valid, try again");
         menu(current_User);
     };
     
