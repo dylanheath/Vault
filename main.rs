@@ -52,6 +52,15 @@ struct Password {
   
 }
 
+#[derive(Debug , Serialize , Deserialize)]
+struct User_edit {
+    name: String,
+    password: String,
+}
+
+
+
+
 impl fmt::Display for User{
    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
       write!(
@@ -79,6 +88,17 @@ impl fmt::Display for Password {
 
 //static server connections
 //
+
+
+fn change_name() {
+
+}
+
+fn change_password() {
+
+}
+
+
 fn exit(current_User: User) {
     println!("[*] see you soon {}!" ,current_User.name);
     println!("[*] signed out")
@@ -86,6 +106,19 @@ fn exit(current_User: User) {
 }
 
 fn abt_user(current_User: User) {
+    println!("[*] credentials");
+    println!("  name {}", current_User.name);
+    println!("  password {}", current_User.password);
+
+    println!("[*] 1. change name");
+    println!("[*] 2. change password");
+    println!("[*] 3. back to menu");
+
+    let mut abt_user_option = String::new();       
+    io::stdin().read_line(&mut abt_user_option).expect("Failed to read line");
+    let abt_user_option = abt_user_option.trim();
+    
+    // add user option for change user data
 
 }
 
