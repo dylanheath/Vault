@@ -90,11 +90,11 @@ impl fmt::Display for Password {
 //
 
 
-fn change_name() {
+fn change_name(current_User: User) {
 
 }
 
-fn change_password() {
+fn change_password(current_User: User) {
 
 }
 
@@ -116,9 +116,20 @@ fn abt_user(current_User: User) {
 
     let mut abt_user_option = String::new();       
     io::stdin().read_line(&mut abt_user_option).expect("Failed to read line");
-    let abt_user_option = abt_user_option.trim();
-    
+    let abt_user_option = abt_user_option.trim(); 
     // add user option for change user data
+    
+    if abt_user_option == "1" {
+        change_name(current_User);
+    } else if abt_user_option == "2" {
+        change_password(current_User);
+    } else if abt_user_option == "3" {
+        menu(current_User);
+
+    } else {
+        println!(" invalid option, try again");
+        abt_user(current_User);
+    }
 
 }
 
