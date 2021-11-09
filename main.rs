@@ -62,6 +62,27 @@ struct edit_name {
     name: String,
 }
 
+#[derive(Debug , Serialize , Deserialize)]
+struct edit_passname {
+    name: String
+
+}
+
+#[derive(Debug , Serialize , Deserialize)]
+struct edit_password {
+    password: String
+}
+
+#[derive(Debug , Serialize , Deserialize)]
+struct edit_username {
+    username: String
+}
+
+#[derive(Debug , Serialize , Deserialize)]
+struct edit_email {
+    email: String
+}
+
 
 impl fmt::Display for User{
    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -90,9 +111,12 @@ impl fmt::Display for Password {
 
 //static server connections
 //
+//
 
+fn user_menu() {
 
-//change passwords functions next
+}
+
 
 async fn change_name(current_User: User) -> mongodb::error::Result<()> {
     
