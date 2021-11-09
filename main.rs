@@ -113,10 +113,13 @@ impl fmt::Display for Password {
 //
 //
 
-fn user_menu() {
+fn user_menu(current_User: User) {
 
 }
 
+fn change_password_menu() {
+
+}
 
 async fn change_name(current_User: User) -> mongodb::error::Result<()> {
     
