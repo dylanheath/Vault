@@ -116,7 +116,34 @@ impl fmt::Display for Password {
 //
 
 
-async fn password_editor(find_password: Password ) {
+async fn password_editor(find_password: Password) -> mongodb::error::Result<()> {
+
+    let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
+    let db = client.database("Passwords");
+    let coll = db.collection::<Password>("Passwords");
+
+    println!("[*] enter a field to edit"); 
+
+    let mut edit_option = String::new();
+    io::stdin().read_line(&mut edit_option).expect("Failed to read line");
+    let edit_option = edit_option.trim();
+
+    let mut field = String::new();
+    let field = edit_option.trim(); 
+
+    println!("[*] enter new {}", field);
+
+    let mut field_data = String::new();
+    io::stdin().read_line(&mut field_data).expect("Failed to read line");
+    let field_data = field_data.trim();
+
+    let filter = doc!{"name": find_password.name.to_string()};
+    let update = doc!{"$set": {edit_option: field_data.to_string()}};
+
+    let input = coll.update_one(filter , update , None).await.unwrap();
+
+    Ok(())
+
 
 
 }
@@ -133,6 +160,9 @@ async fn password_find(current_User: User) -> mongodb::error::Result<()> {
     let coll = db.collection::<Password>("Password");
 
     let mut cursor = coll.find(doc! {"name": password_name.to_string()} , None).await?;
+
+    std::thread::sleep(std::time::Duration::from_secs(3));
+    handle.done();
 
     if let Some(password) = cursor.try_next().await? {
         let find_password = Password {
