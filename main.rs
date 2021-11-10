@@ -84,6 +84,8 @@ struct edit_email {
 }
 
 
+
+
 impl fmt::Display for User{
    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
       write!(
@@ -114,11 +116,43 @@ impl fmt::Display for Password {
 //
 
 
+async fn password_editor(find_password: Password ) {
 
-async fn password_editor(current_User: User) {
+
+}
+
+async fn password_find(current_User: User) -> mongodb::error::Result<()> {
     let mut password_name = String::new();
     io::stdin().read_line(&mut password_name).expect("Failed to read line");
     let password_name = password_name.trim();
+    
+    let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Updating Data").start();
+    
+    let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
+    let db = client.database("Password");
+    let coll = db.collection::<Password>("Password");
+
+    let mut cursor = coll.find(doc! {"name": password_name.to_string()} , None).await?;
+
+    if let Some(password) = cursor.try_next().await? {
+        let find_password = Password {
+                name: password.name,
+                username: password.username,
+                password: password.password,
+                email: password.email,
+             };
+             
+            println!("[*] {}", find_password.name);
+            println!("  {}", find_password.username);
+            println!("  {}", find_password.password);
+            println!("  {}", find_password.email);
+
+            password_editor(find_password);
+    }
+
+    Ok(())
+
+     
 }
 
 
@@ -159,8 +193,8 @@ async fn change_password(current_User: User) -> mongodb::error::Result<()>  {
     let db = client.database("User");
     let coll = db.collection::<edit_pass>("Passwords");
 
-    let filter = doc!{"name": current_User.name};
-    let update = doc!{"$set": {"password": new_password}};
+    let filter = doc!{"name": current_User.name.to_string()};
+    let update = doc!{"$set": {"password": new_password.to_string()}};
 
     let input = coll.update_one(filter , update , None).await.unwrap(); 
 
