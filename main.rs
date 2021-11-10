@@ -113,9 +113,9 @@ impl fmt::Display for Password {
 //
 //
 
-fn user_menu(current_User: User) {
 
-}
+
+
 
 fn change_password_menu() {
 
@@ -307,7 +307,8 @@ fn menu(current_User: User) {
     println!("[*] menu");
     println!(" 1. add");
     println!(" 2. view");
-    println!(" 3. exit");
+    println!(" 3. user");
+    println!(" 4. exit");
 
     let mut menu_option = String::new();
     io::stdin().read_line(&mut menu_option).expect("Failed to read line");
@@ -318,11 +319,13 @@ fn menu(current_User: User) {
     } else if menu_option == "2"  {
         view(current_User);
     } else if menu_option == "3" {
+        abt_userAuth(current_User);
+    } else if menu_option == "4" {
         exit(current_User);
     } else {
-        println!("option not valid, try again");
+        println!("invalid option, try again");
         menu(current_User);
-    };
+    }
     
 
 
