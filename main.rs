@@ -115,11 +115,13 @@ impl fmt::Display for Password {
 
 
 
-
-
-fn change_password_menu() {
-
+async fn password_editor(current_User: User) {
+    let mut password_name = String::new();
+    io::stdin().read_line(&mut password_name).expect("Failed to read line");
+    let password_name = password_name.trim();
 }
+
+
 
 async fn change_name(current_User: User) -> mongodb::error::Result<()> {
     
