@@ -142,6 +142,8 @@ async fn password_editor(find_password: Password) -> mongodb::error::Result<()> 
 
     let input = coll.update_one(filter , update , None).await.unwrap();
 
+    println!("[*] updated");
+
     Ok(())
 
 
@@ -377,8 +379,9 @@ fn menu(current_User: User) {
     println!("[*] menu");
     println!(" 1. add");
     println!(" 2. view");
-    println!(" 3. user");
-    println!(" 4. exit");
+    println!(" 3. edit");
+    println!(" 4. user");
+    println!(" 5. exit");
 
     let mut menu_option = String::new();
     io::stdin().read_line(&mut menu_option).expect("Failed to read line");
@@ -389,8 +392,10 @@ fn menu(current_User: User) {
     } else if menu_option == "2"  {
         view(current_User);
     } else if menu_option == "3" {
-        abt_userAuth(current_User);
+        password_find(current_User);
     } else if menu_option == "4" {
+        abt_userAuth(current_User);
+    } else if menu_option == "5" {
         exit(current_User);
     } else {
         println!("invalid option, try again");
