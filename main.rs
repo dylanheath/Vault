@@ -233,33 +233,37 @@ async fn add(current_User: User) -> mongodb::error::Result<()> {
     println!("[*] enter password name");
     let mut name = String::new();
     io::stdin().read_line(&mut name).expect("Failed to get input");
+    let name = name.trim();
 
     println!("[*] enter username");
     let mut username = String::new();
     io::stdin().read_line(&mut username).expect("Failed to get input");
+    let username =  username.trim();
 
     println!("[*] enter password");
     let mut password = String::new();
     io::stdin().read_line(&mut password).expect("Failed to get input");
+    let password = password.trim();
 
     println!("[*] enter email");
     let mut email = String::new();
     io::stdin().read_line(&mut email).expect("Failed to get input");
+    let email = email.trim();
 
     let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
     let passwordadd = Password {
-        name: name,
-        username: username,
-        password: password,
-        email: email,
+        name: name.to_string(),
+        username: username.to_string(),
+        password: password.to_string(),
+        email: email.to_string(),
     };
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
     let db = client.database("Passwords");
     let coll = db.collection::<Password>("Passwords");
 
-    let insert = coll.insert_one(Password {name: passwordadd.name.to_string(), password: passwordadd.password.to_string() , username: passwordadd.username.to_string() , email: passwordadd.email.to_string() }, None ).await?;
+    let insert = coll.insert_one(Password {name: passwordadd.name, password: passwordadd.password , username: passwordadd.username , email: passwordadd.email }, None ).await?;
     println!("[*] password added");
 
     Ok(())
