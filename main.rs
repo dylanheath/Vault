@@ -137,10 +137,15 @@ async fn password_editor(find_password: Password) -> mongodb::error::Result<()> 
     io::stdin().read_line(&mut field_data).expect("Failed to read line");
     let field_data = field_data.trim();
 
+    let handle = SpinnerBuilder::new().spinner(&DOTS).text("  Updating Data").start();
+
     let filter = doc!{"name": find_password.name.to_string()};
     let update = doc!{"$set": {edit_option: field_data.to_string()}};
 
     let input = coll.update_one(filter , update , None).await.unwrap();
+    
+    std::thread::sleep(std::time::Duration::from_secs(3));
+    handle.done();
 
     println!("[*] updated");
 
