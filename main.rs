@@ -122,7 +122,7 @@ async fn password_editor(find_password: Password) -> mongodb::error::Result<()> 
     let db = client.database("Passwords");
     let coll = db.collection::<Password>("Passwords");
 
-    println!("[*] enter a field to edit"); 
+    println!("[*] enter a field to edit:"); 
 
     let mut edit_option = String::new();
     io::stdin().read_line(&mut edit_option).expect("Failed to read line");
