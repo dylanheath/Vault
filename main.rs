@@ -250,13 +250,16 @@ async fn change_password(current_User: User) -> mongodb::error::Result<()>  {
 
 
 fn exit(current_User: User) {
-    println!("[*] see you soon {}!" ,current_User.name);
+    println!("[*] see you soon {}!\n" ,current_User.name);
     println!("[*] signed out")
 
 }
 
 fn abt_user(current_User: User) {
-    println!("[*] credentials\n");
+    
+    clearscreen::clear().unwrap();
+
+    println!("\n[*] credentials\n");
     println!("  name {}", current_User.name);
     println!("  password {}\n", current_User.password);
 
@@ -354,6 +357,8 @@ async fn delete() {
 
 async fn view(current_User: User) -> mongodb::error::Result<()> {
 
+    println!("something is wrong");
+
     let handle =  SpinnerBuilder::new().spinner(&DOTS).text("  Loading Data").start();
 
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?; 
@@ -385,7 +390,7 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
 }
 
 
-fn menu(current_User: User) {
+async fn menu(current_User: User) {
     
     clearscreen::clear().unwrap();
     
