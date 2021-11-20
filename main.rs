@@ -256,9 +256,9 @@ fn exit(current_User: User) {
 }
 
 fn abt_user(current_User: User) {
-    println!("[*] credentials");
+    println!("[*] credentials\n");
     println!("  name {}", current_User.name);
-    println!("  password {}", current_User.password);
+    println!("  password {}\n", current_User.password);
 
     println!("[*] 1. change name");
     println!("[*] 2. change password");
