@@ -21,6 +21,11 @@ use serde_json::{json ,Result, Value};
 //animations
 use terminal_spinners::{SpinnerBuilder, DOTS};
 
+
+//text coloring
+
+use colored::*;
+
 //socket/networking
 
 
@@ -381,12 +386,15 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
 
 
 fn menu(current_User: User) {
-    println!("[*] menu");
+    
+    clearscreen::clear().unwrap();
+    
+    println!("{}" ,"[*] menu\n".green());
     println!(" 1. add");
     println!(" 2. view");
     println!(" 3. edit");
     println!(" 4. user");
-    println!(" 5. exit");
+    println!("{}" , " 5. exit\n".red());
 
     let mut menu_option = String::new();
     io::stdin().read_line(&mut menu_option).expect("Failed to read line");
@@ -437,19 +445,19 @@ async fn find_user(coll: mongodb::Collection::<User>) -> mongodb::error::Result<
            uid: user.uid,
            name: user.name,
            password:user.password,
-        };
-        
-
-        
+        };   
          menu(current_User);
     };
-
-
     Ok(()) 
 }
 
 #[tokio::main]
 async fn main() -> mongodb::error::Result<()> {
+
+    println!("Vault");
+    println!("{} {}" ,"by", "https://github.com/AcenGit/Vault\n".green());
+    
+
     let client = Client::with_uri_str("mongodb+srv://Admin:1234@cluster0.h7ieh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").await?;
     let db = client.database("User"); //< needs to change for every collection such as Users and passwords
 
