@@ -390,16 +390,16 @@ async fn view(current_User: User) -> mongodb::error::Result<()> {
 }
 
 
-async fn menu(current_User: User) {
+fn menu(current_User: User) {
     
-    clearscreen::clear().unwrap();
+    //clearscreen::clear().unwrap();
     
     println!("{}" ,"[*] menu\n".green());
     println!(" 1. add");
     println!(" 2. view");
     println!(" 3. edit");
     println!(" 4. user");
-    println!("{}" , " 5. exit\n".red());
+    println!("{}" , " 5. exit".red());
 
     let mut menu_option = String::new();
     io::stdin().read_line(&mut menu_option).expect("Failed to read line");
@@ -416,7 +416,7 @@ async fn menu(current_User: User) {
     } else if menu_option == "5" {
         exit(current_User);
     } else {
-        println!("invalid option, try again");
+        println!("invalid option, try again\n");
         menu(current_User);
     }
     
